@@ -4,17 +4,22 @@
 \alias{p3d_cube}
 \title{Generate random points on the surface of a cube}
 \usage{
-p3d_cube(n, lims = c(0, 1))
+p3d_cube(n, sidelen = 1, pos = c(0, 0, 0))
 }
 \arguments{
 \item{n}{Number of points to generate.}
 
-\item{lims}{Vector of min and max ordinates. The default (\code{c(0,1)})
-corresponds to a unit cube at the origin.}
+\item{sidelen}{Cube side length. Default is 1.}
+
+\item{pos}{Either a numeric vector of three values giving the position on
+each axis, or a single value which will be used for all axes.}
 }
 \value{
 A named list with elements:
   \code{coords}: A three column matrix of point coordinates;
+  \code{npts}: Number of points;
+  \code{sidelen}: Side length;
+  \code{pos}: Vector of length three giving the position on each axis;
   \code{sides}: A vector of integers (values 0-5) identifying the side on
   which each point lies.
 }
@@ -22,8 +27,12 @@ A named list with elements:
 Generate random points on the surface of a cube
 }
 \examples{
+# 1000 points on a unit cube at the origin
 xcube <- p3d_cube(n = 1000)
 head(xcube$coords)
+
+# 4000 points on a larger cube at x=2, y=-5, z=0
+xcube <- p3d_cube(n = 4000, sidelen = 5, pos = c(2, -5, 0))
 
 \dontrun{
 # If you have installed package 'threejs' you can view
