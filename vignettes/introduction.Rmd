@@ -1,0 +1,51 @@
+---
+title: "Introduction"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(pointshapes3d)
+```
+
+## First example
+
+We will place 4000 random points on the surfaces of a unit cube.
+
+```{r}
+
+a.cube <- p3d_cube(4000)
+
+# Object is a list with a matrix of point coordinates...
+head(a.cube$coords)
+
+# ...and a vector of integers (0 - 5) identifying the side
+# on which each point is placed
+head(a.cube$sides, 10)
+
+```
+
+If you have the `threejs` package installed, you can display an interactive
+plot of the cube in a browser window. We will colour the points so that those
+on opposite sides have the same colour.
+
+```{r eval=FALSE}
+
+clr.index <- 1 + (a.cube$sides %% 3)
+clrs <- c("#1b9e77", "#d95f02", "#7570b3")
+
+threejs::scatterplot3js(a.cube$coords, color = clrs[clr.index], size = 0.2)
+
+```
+
+![3D scatter plot of points on cube](cube_example.jpg)

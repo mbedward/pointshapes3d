@@ -1,0 +1,18 @@
+Package: pointshapes3d
+Title: Place random points on the surfaces of simple 3D shapes
+Version: 0.0.1
+Authors@R: 
+    person(given = "Michael",
+           family = "Bedward",
+           role = c("aut", "cre"),
+           email = "michael.bedward@gmail.com",
+           comment = c(ORCID = "https://orcid.org/0000-0002-9986-1286"))
+Description: What the package does (one paragraph).
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
