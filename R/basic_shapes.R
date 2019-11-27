@@ -110,7 +110,7 @@ p3d_cube <- function(n, sidelen = 1, pos = c(0,0,0)) {
 #'
 #' @export
 #'
-p3d_sphere <- function(n, radius, pos = c(0,0,0)) {
+p3d_sphere <- function(n, radius = 1, pos = c(0,0,0)) {
   n <- .just_one(n)
   radius <- .just_one(radius)
 

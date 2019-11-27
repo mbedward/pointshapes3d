@@ -49,3 +49,26 @@ threejs::scatterplot3js(a.cube$coords, color = clrs[clr.index], size = 0.2)
 ```
 
 ![3D scatter plot of points on cube](cube_example.jpg)
+
+## Multiple shapes
+
+You can combine two or more shapes by concatenating their coordinate matrices.
+
+```{r eval = FALSE}
+
+N <- 1000
+a.sphere <- p3d_sphere(N, pos = c(2, 0, 0))
+all.pts <- a.sphere$coords
+
+a.cube <- p3d_cube(N)
+all.pts <- rbind(all.pts, a.cube$coords)
+
+# Set the x, y and z limits for the plot to the same range so that
+# the shapes appear undistorted
+threejs::scatterplot3js(coords, size = 0.2, 
+                        color = rep(c("thistle", "tomato"), each = N), 
+                        xlim = c(-1,3), ylim = c(-1, 3), zlim = c(-1, 3))
+
+```
+
+![A sphere and a cube](multiple_shapes_example.jpg)

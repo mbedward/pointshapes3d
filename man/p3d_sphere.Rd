@@ -4,7 +4,7 @@
 \alias{p3d_sphere}
 \title{Generate random points on the surface of a sphere}
 \usage{
-p3d_sphere(n, radius, pos = c(0, 0, 0))
+p3d_sphere(n, radius = 1, pos = c(0, 0, 0))
 }
 \arguments{
 \item{n}{Number of points to generate.}
