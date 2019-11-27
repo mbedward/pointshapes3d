@@ -1,7 +1,7 @@
 Package: pointshapes3d
 Title: Generate random points on the surface of simple 3D shapes
-Version: 0.0.2
-Date: 2019-11-27
+Version: 0.0.3
+Date: 2019-11-28
 Authors@R: 
     person(given = "Michael",
            family = "Bedward",

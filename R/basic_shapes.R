@@ -114,7 +114,7 @@ p3d_sphere <- function(n, radius = 1, pos = c(0,0,0)) {
   n <- .just_one(n)
   radius <- .just_one(radius)
 
-  if (radius == 0) stop("radius must be a positive value")
+  if (radius <= 0) stop("radius must be a positive value")
 
   if (length(pos) == 1) {
     pos <- rep(pos, 3)
@@ -154,6 +154,90 @@ p3d_sphere <- function(n, radius = 1, pos = c(0,0,0)) {
   m <- t(apply(m, MARGIN = 1, function(xyz) xyz + pos))
 
   list(coords = m, npts = n, radius = radius, pos = pos)
+}
+
+
+#' Generate random points on the surface of a cylinder
+#'
+#' Presently this function only creates a cylinder aligned with one of the axes.
+#' The next step is to allow the orientation of the cylinder to be varied more
+#' flexibly.
+#'
+#' @param n Number of points to generate.
+#'
+#' @param radius Cylinder radius (must be positive). Default is 1.
+#'
+#' @param height Cylinder height (must be positive). Default is 1.
+#'
+#' @param pos Either a numeric vector of three values giving the position of the
+#'   cylinder centroid on each axis, or a single value which will be used for
+#'   all axes. Default is the origin: \code{c(0,0,0)}.
+#'
+#' @param align The axis along which the cylinder should be aligned, specified
+#'   as either character (one of (\code{'x', 'y', 'z'}), case ignored) or an
+#'   integer (one of \code{1, 2, 3}).
+#'
+#' @return A named list with elements:
+#'   \describe{
+#'   \item{coords}{A three column matrix of point coordinates.}
+#'   \item{npts}{Number of points.}
+#'   \item{radius}{Cylinder radius.}
+#'   \item{height}{Cylinder height.}
+#'   \item{pos}{Vector of length three giving the position on each axis.}
+#'   }
+#'
+#' @examples
+#' # 4000 points on a cylinder with radius=10 and height=20
+#' # aligned with the X axis.
+#' xcyl <- p3d_cylinder(n = 4000, radius = 10, height = 20, align = "x")
+#' head(xcyl$coords)
+#'
+#' \dontrun{
+#' # If you have installed package 'threejs' you can view
+#' # and rotate the sphere points in a browser window
+#' threejs::scatterplot3js(xcyl$coords, size = 0.2)
+#' }
+#'
+#' @export
+#'
+p3d_cylinder <- function(n, radius, height, pos = c(0,0,0), align = "z") {
+  n <- .just_one(n)
+  radius <- .just_one(radius)
+  height <- .just_one(height)
+  align <- .just_one(align)
+
+  if (radius <= 0) stop("radius must be a positive value")
+  if (height <= 0) stop("height must be a positive value")
+
+  if (length(pos) == 1) {
+    pos <- rep(pos, 3)
+  } else if (length(pos) != 3) {
+    stop("pos should be a vector of three values, or a single value")
+  }
+
+  if (is.character(align)) {
+    align <- match(tolower(align), c("x", "y", "z"))
+  } else if (is.numeric(align)) {
+    align <- match(align, 1:3)
+  } else {
+    align <- NA
+  }
+  if (is.na(align)) stop("align should be one of either 'x', 'y', 'z' or 1, 2, 3")
+
+  theta <- runif(n, 0, 2*pi)
+  h <- runif(n, 0, height)
+
+  m <- cbind(
+    radius * cos(theta),
+    radius * sin(theta),
+    h
+  )
+
+  cols <- c(setdiff(1:3, align), align)
+  m[, cols] <- m
+  colnames(m) <- c("x", "y", "z")
+
+  list(coords = m, npts = n, radius = radius, height = height)
 }
 
 
