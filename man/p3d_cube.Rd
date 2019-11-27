@@ -9,19 +9,23 @@ p3d_cube(n, sidelen = 1, pos = c(0, 0, 0))
 \arguments{
 \item{n}{Number of points to generate.}
 
-\item{sidelen}{Cube side length. Default is 1.}
+\item{sidelen}{Cube side length. Default is 1. Negative values are permitted.}
 
 \item{pos}{Either a numeric vector of three values giving the position on
-each axis, or a single value which will be used for all axes.}
+each axis, or a single value which will be used for all axes. Default is
+the origin: \code{c(0,0,0)}. If \code{sidelen} is a positive value,
+\code{pos} will be the minimum corner position on each axis.}
 }
 \value{
 A named list with elements:
-  \code{coords}: A three column matrix of point coordinates;
-  \code{npts}: Number of points;
-  \code{sidelen}: Side length;
-  \code{pos}: Vector of length three giving the position on each axis;
-  \code{sides}: A vector of integers (values 0-5) identifying the side on
-  which each point lies.
+  \describe{
+  \item{coords}{A three column matrix of point coordinates.}
+  \item{npts}{Number of points.}
+  \item{sidelen}{Side length.}
+  \item{pos}{Vector of length three giving the position on each axis.}
+  \item{sides}{A vector of integers (values 0-5) identifying the side on
+    which each point lies.}
+  }
 }
 \description{
 Generate random points on the surface of a cube
