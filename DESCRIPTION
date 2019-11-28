@@ -8,8 +8,8 @@ Authors@R:
            role = c("aut", "cre"),
            email = "michael.bedward@gmail.com",
            comment = c(ORCID = "https://orcid.org/0000-0002-9986-1286"))
-Description: Some functions to make it easy to generate random points that lie
-  on the surface of simple 3D shapes. 
+Description: Some functions to generate random surface points on a selection of
+  simple 3D shapes.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

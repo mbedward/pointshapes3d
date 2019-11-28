@@ -150,7 +150,7 @@ p3d_sphere <- function(n, radius = 1, pos = c(0,0,0)) {
   m <- t(m)
   colnames(m) <- c("x", "y", "z")
 
-  # Scale and position
+  # Set position
   m <- t(apply(m, MARGIN = 1, function(xyz) xyz + pos))
 
   list(coords = m, npts = n, radius = radius, pos = pos)
@@ -236,6 +236,9 @@ p3d_cylinder <- function(n, radius, height, pos = c(0,0,0), align = "z") {
   cols <- c(setdiff(1:3, align), align)
   m[, cols] <- m
   colnames(m) <- c("x", "y", "z")
+
+  # Set position
+  m <- t(apply(m, MARGIN = 1, function(xyz) xyz + pos))
 
   list(coords = m, npts = n, radius = radius, height = height)
 }
