@@ -1,7 +1,7 @@
 Package: pointshapes3d
 Title: Generate random points on the surface of simple 3D shapes
-Version: 0.0.3
-Date: 2019-11-28
+Version: 0.0.4
+Date: 2019-12-18
 Authors@R: 
     person(given = "Michael",
            family = "Bedward",
@@ -9,11 +9,11 @@ Authors@R:
            email = "michael.bedward@gmail.com",
            comment = c(ORCID = "https://orcid.org/0000-0002-9986-1286"))
 Description: Some functions to generate random surface points on a selection of
-  simple 3D shapes.
+  simple 3D shapes (cube, sphere, cylinder and ellipsoid).
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.1
 Suggests: 
     knitr,
     rmarkdown,

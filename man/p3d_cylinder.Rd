@@ -28,7 +28,6 @@ A named list with elements:
   \item{npts}{Number of points.}
   \item{radius}{Cylinder radius.}
   \item{height}{Cylinder height.}
-  \item{pos}{Vector of length three giving the position on each axis.}
   }
 }
 \description{

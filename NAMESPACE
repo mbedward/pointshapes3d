@@ -2,4 +2,9 @@
 
 export(p3d_cube)
 export(p3d_cylinder)
+export(p3d_ellipsoid)
+export(p3d_rotate)
+export(p3d_rx)
+export(p3d_ry)
+export(p3d_rz)
 export(p3d_sphere)

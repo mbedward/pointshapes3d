@@ -22,7 +22,6 @@ A named list with elements:
   \item{coords}{A three column matrix of point coordinates.}
   \item{npts}{Number of points.}
   \item{sidelen}{Side length.}
-  \item{pos}{Vector of length three giving the position on each axis.}
   \item{sides}{A vector of integers (values 0-5) identifying the side on
     which each point lies.}
   }

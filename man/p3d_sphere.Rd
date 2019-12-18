@@ -21,7 +21,6 @@ A named list with elements:
   \item{coords}{A three column matrix of point coordinates.}
   \item{npts}{Number of points.}
   \item{radius}{Sphere radius.}
-  \item{pos}{Vector of length three giving the position on each axis.}
   }
 }
 \description{

@@ -14,7 +14,6 @@
 #'   \item{coords}{A three column matrix of point coordinates.}
 #'   \item{npts}{Number of points.}
 #'   \item{sidelen}{Side length.}
-#'   \item{pos}{Vector of length three giving the position on each axis.}
 #'   \item{sides}{A vector of integers (values 0-5) identifying the side on
 #'     which each point lies.}
 #'   }
@@ -72,7 +71,7 @@ p3d_cube <- function(n, sidelen = 1, pos = c(0,0,0)) {
   # Scale and position
   m <- t(apply(m, MARGIN = 1, function(xyz) xyz * sidelen + pos))
 
-  list(coords = m, npts = n, sidelen = sidelen, pos = pos, sides = sides)
+  list(coords = m, npts = n, sidelen = sidelen, sides = sides)
 }
 
 
@@ -91,7 +90,6 @@ p3d_cube <- function(n, sidelen = 1, pos = c(0,0,0)) {
 #'   \item{coords}{A three column matrix of point coordinates.}
 #'   \item{npts}{Number of points.}
 #'   \item{radius}{Sphere radius.}
-#'   \item{pos}{Vector of length three giving the position on each axis.}
 #'   }
 #'
 #' @examples
@@ -141,10 +139,7 @@ p3d_sphere <- function(n, radius = 1, pos = c(0,0,0)) {
   }
 
   m <- apply(m, MARGIN = 1, function(p) {
-    d <- sum(p^2)
-    if (d > 0) {
-      radius * p / sqrt(sum(p^2))
-    }
+    radius * p / sqrt( sum(p^2) )
   })
 
   m <- t(m)
@@ -153,7 +148,89 @@ p3d_sphere <- function(n, radius = 1, pos = c(0,0,0)) {
   # Set position
   m <- t(apply(m, MARGIN = 1, function(xyz) xyz + pos))
 
-  list(coords = m, npts = n, radius = radius, pos = pos)
+  list(coords = m, npts = n, radius = radius)
+}
+
+
+#' Generate random points on the surface of an ellipsoid
+#'
+#' @param n Number of points to generate.
+#'
+#' @param radii Radii along each of the X, Y and Z axes. Default is c(1,1,1)
+#'   which gives a unit sphere. Values must be positive.
+#'
+#' @param pos Either a numeric vector of three values giving the position on
+#'   each axis, or a single value which will be used for all axes. Default is
+#'   the origin: \code{c(0,0,0)}.
+#'
+#' @return A named list with elements:
+#'   \describe{
+#'   \item{coords}{A three column matrix of point coordinates.}
+#'   \item{npts}{Number of points.}
+#'   \item{radii}{Vector of length three giving the radius along each axis.}
+#'   }
+#'
+#' @examples
+#' # 1000 points on an ellipsoid at the origin
+#' xellipsoid <- p3d_ellipsoid(n = 1000, radii = c(10, 4, 2))
+#' head(xellipsoid$coords)
+#'
+#' # 4000 points on a larger ellipsoid at x=10, y=-20, z=0
+#' xellipsoid <- p3d_ellipsoid(n = 4000, radii = c(20, 10, 5), pos = c(10, -20, 0))
+#'
+#' \dontrun{
+#' # If you have installed package 'threejs' you can view
+#' # and rotate the ellipsoid in a browser window
+#' threejs::scatterplot3js(xellipsoid$coords, size = 0.2)
+#' }
+#'
+#' @export
+#'
+p3d_ellipsoid <- function(n, radii = c(1,1,1), pos = c(0,0,0)) {
+  n <- .just_one(n)
+
+  if ((length(radii) != 3) || any(radii <= 0))
+    stop("radii should be a vector of three positive values")
+
+  if (length(pos) == 1) {
+    pos <- rep(pos, 3)
+  } else if (length(pos) != 3) {
+    stop("pos should be a vector of three values, or a single value")
+  }
+
+  # Matrix of random values drawn from Normal distributions,
+  # guarding against zero rows
+  nok <- 0
+  m <- matrix(0, nrow = 0, ncol = 3)
+  while (nok < n) {
+    needed <- n - nok
+    mtry <- matrix(
+      rnorm(3*needed, 0, rep(radii, each = needed)),
+      nrow = needed, ncol = 3)
+
+    zeros <- as.logical(apply(mtry, MARGIN = 1, all.equal, c(0,0,0)))
+    zeros[is.na(zeros)] <- FALSE
+
+    if (any(zeros)) {
+      mtry <- mtry[!zeros, , drop = FALSE]
+    }
+
+    if (nrow(mtry) > 0) m <- rbind(m, mtry)
+    nok <- nrow(m)
+  }
+
+  r2 <- radii^2
+  m <- apply(m, MARGIN = 1, function(p) {
+    p / sqrt( sum(p^2 / r2) )
+  })
+
+  m <- t(m)
+  colnames(m) <- c("x", "y", "z")
+
+  # Set position
+  m <- t(apply(m, MARGIN = 1, function(xyz) xyz + pos))
+
+  list(coords = m, npts = n, radii = radii)
 }
 
 
@@ -183,7 +260,6 @@ p3d_sphere <- function(n, radius = 1, pos = c(0,0,0)) {
 #'   \item{npts}{Number of points.}
 #'   \item{radius}{Cylinder radius.}
 #'   \item{height}{Cylinder height.}
-#'   \item{pos}{Vector of length three giving the position on each axis.}
 #'   }
 #'
 #' @examples
@@ -243,17 +319,3 @@ p3d_cylinder <- function(n, radius, height, pos = c(0,0,0), align = "z") {
   list(coords = m, npts = n, radius = radius, height = height)
 }
 
-
-.just_one <- function(x) {
-  if (length(x != 1)) {
-    nm <- deparse(substitute(x))
-    if (length(x) > 1) {
-      warning("Ignoring all but the first value of ", nm,
-              call. = FALSE)
-    } else if (length(x) == 0) {
-      stop("Expected a value for ", nm)
-    }
-  }
-
-  x[1]
-}
